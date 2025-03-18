@@ -1,0 +1,56 @@
+.keyboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin-top: 20px;
+  }
+  
+  .row {
+    display: flex;
+    gap: 5px;
+  }
+  
+  .key {
+    width: 40px;
+    height: 50px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: #f8f9fa;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  
+  .key.large {
+    width: 80px; /* Wider keys for ENTER and BACKSPACE */
+  }
+  
+  .key.correct {
+    background-color: #6aaa64; /* Green for correct letters */
+    color: white;
+  }
+  
+  .key.present {
+    background-color: #c9b458; /* Yellow for present letters */
+    color: white;
+  }
+  
+  .key.absent {
+    background-color: #787c7e; /* Gray for absent letters */
+    color: white;
+  }
+  
+  .key:active {
+    transform: scale(0.95); /* Add a slight press effect */
+  }
+
+  .key.large {
+    width: 80px;
+    font-size: 14px; /* Adjust font size for larger keys */
+  }

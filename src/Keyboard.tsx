@@ -1,6 +1,6 @@
 import "./Keyboard.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBackspace } from '@fortawesome/free-solid-svg-icons';
+import { faBackspace, faLevelDownAlt } from '@fortawesome/free-solid-svg-icons';
 
 const Keyboard = ({ onKeyClick, guesses, targetWord }: any) => {
     const keys1 = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'];
@@ -45,9 +45,20 @@ const Keyboard = ({ onKeyClick, guesses, targetWord }: any) => {
             </div>
             <div className="row">
                 {keys3.map((key) => (
-                    <button key={key} onClick={() => onKeyClick(key)} className={`key ${key === 'ENTER' || key === 'BACKSPACE' ? 'large' : ''} ${getKeyStatus(key)}`}>
-                        {key === 'BACKSPACE' ? <FontAwesomeIcon icon={faBackspace} /> : key}
+                    <button
+                        key={key}
+                        onClick={() => onKeyClick(key)}
+                        className={`key ${key === 'ENTER' || key === 'BACKSPACE' ? 'large' : ''} ${getKeyStatus(key)}`}
+                    >
+                        {key === 'BACKSPACE' ? (
+                            <FontAwesomeIcon icon={faBackspace} />
+                        ) : key === 'ENTER' ? (
+                            <FontAwesomeIcon icon={faLevelDownAlt} rotation={90} />
+                        ) : (
+                            key
+                        )}
                     </button>
+
                 ))}
             </div>
         </div>

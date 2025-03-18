@@ -5,17 +5,28 @@ import Keyboard from './Keyboard';
 
 function App() {
 
-  const getRandomWord = () => {
-    const fiveLetterWords = words.filter((word) => word.length === 5);
-    const randomWord = fiveLetterWords[Math.floor(Math.random() * fiveLetterWords.length)];
-    console.log(randomWord);
-    return randomWord.toUpperCase();
+  const getRandomWord = async () => {
+    try {
+      const response = await fetch('/wordle-La.txt');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const fileContent = await response.text();
+      const words = fileContent.split('\n').map(word => word.trim()).filter(word => word.length > 0);
+      const randomWord = words[Math.floor(Math.random() * words.length)];
+      console.log(randomWord);
+      return randomWord.toUpperCase();
+    } catch (error) {
+      console.error('Error fetching the word list:', error);
+      return '';
+    }
   };
 
-  const restartGame = () => {
+  const restartGame = async () => {
     setCurrentGuess('');
     setGuesses([]);
-    setTargetWord(getRandomWord()); // Generate a new target word
+    const newWord = await getRandomWord();
+    setTargetWord(newWord); // Generate a new target word
     setGameStatus('playing');
     setShowNotification(false);
   };
@@ -26,10 +37,19 @@ function App() {
 
   const [guesses, setGuesses] = useState<string[]>([]); // Store all guesses
   const guessesRef = useRef(guesses); // Ref to store the latest value of guesses
-  const [targetWord, setTargetWord] = useState(() => getRandomWord());
+  const [targetWord, setTargetWord] = useState('');
+  const targetWordRef = useRef(targetWord);
   const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'lost'>('playing');
   const gameStatusRef = useRef(gameStatus);
   const [showNotification, setShowNotification] = useState(false);
+
+  useEffect(() => {
+    const fetchWord = async () => {
+      const word = await getRandomWord();
+      setTargetWord(word);
+    };
+    fetchWord();
+  }, []);
 
 
   // Update the ref whenever currentGuess changes
@@ -45,6 +65,9 @@ function App() {
   useEffect(() => {
     gameStatusRef.current = gameStatus;
   }, [gameStatus]);
+  useEffect(() => {
+    targetWordRef.current = targetWord;
+  }, [targetWord]);
 
 
   const checkWordValidity = (word: string) => {
@@ -67,11 +90,7 @@ function App() {
         if (isValidWord) {
           const submittedGuess = currentGuessRef.current;
 
-          // Log the submitted guess
-          console.log('Submitting guess:', submittedGuess);
-          console.log('allguessesLength: ', guessesRef.current.length);
-
-          if (submittedGuess === targetWord) {
+          if (submittedGuess === targetWordRef.current) {
             setGameStatus('won');
             gameStatusRef.current = 'won';
           } else if (guessesRef.current.length + 1 >= 6) {
@@ -108,7 +127,6 @@ function App() {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       let key = event.key.toUpperCase();
-      console.log('Physical key pressed:', key); // Log the key
       if (key === 'BACKSPACE' || key === 'ENTER' || /^[A-Z]$/.test(key)) {
         handleKeyClick(key);
       }
@@ -131,7 +149,7 @@ function App() {
 
   // Function to determine the status of each letter in a guess
   const getLetterStatus = (guess: string, index: number) => {
-    if (guess[index] === targetWord[index]) {
+    if (guess[index] === targetWordRef.current[index]) {
       return 'correct'; // Correct letter in the correct position
     } else if (targetWord.includes(guess[index])) {
       return 'present'; // Letter is present but in the wrong position
@@ -154,7 +172,7 @@ function App() {
       {gameStatus === 'lost' && (
         <div className="message lost">
           <div className="message-content">
-            You lost! The word was: {targetWord}
+            You lost! The word was: {targetWordRef.current}
           </div>
           <div><button onClick={restartGame}>Restart</button></div>
         </div>
@@ -189,7 +207,7 @@ function App() {
       <Keyboard
         onKeyClick={handleKeyClick}
         guesses={guesses}
-        targetWord={targetWord}
+        targetWord={targetWordRef.current}
         disabled={gameStatus !== 'playing'}
       />
     </div>

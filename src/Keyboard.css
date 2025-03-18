@@ -63,37 +63,3 @@
     transform: scale(0.95); /* Add a slight press effect */
 }
 
-/* Media Queries for Smaller Screens */
-@media (max-width: 600px) {
-    .key {
-        height: 40px; /* Reduce key height for smaller screens */
-        font-size: 14px; /* Reduce font size for smaller screens */
-    }
-
-    .key.large {
-        font-size: 12px; /* Adjust font size for larger keys on smaller screens */
-    }
-
-    .row {
-        gap: 3px; /* Reduce gap between keys for smaller screens */
-    }
-}
-
-@media (max-width: 400px) {
-    .key {
-        height: 35px; /* Further reduce key height for very small screens */
-        font-size: 12px; /* Further reduce font size for very small screens */
-    }
-
-    .key.large {
-        font-size: 10px; /* Adjust font size for larger keys on very small screens */
-    }
-
-    .row {
-        gap: 2px; /* Further reduce gap between keys for very small screens */
-    }
-
-    .keyboard {
-        padding: 0 2px; /* Reduce padding for very small screens */
-    }
-}

@@ -4,53 +4,96 @@
     align-items: center;
     gap: 5px;
     margin-top: 20px;
-  }
-  
-  .row {
+    width: 100%; /* Ensure the keyboard takes full width */
+    max-width: 500px; /* Limit maximum width for larger screens */
+    margin-left: auto;
+    margin-right: auto; /* Center the keyboard */
+    padding: 0 5px; /* Add some padding to prevent overflow */
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+
+.row {
     display: flex;
     gap: 5px;
-  }
-  
-  .key {
-    width: 40px;
-    height: 50px;
-    border: 2px solid #ccc;
-    border-radius: 5px;
+    width: 100%; /* Ensure rows take full width */
+    justify-content: center; /* Center keys in each row */
+}
+
+.key {
+    all: unset; /* Reset all default button styles */
     display: flex;
     align-items: center;
     justify-content: center;
+    flex: 1 1 0;
+    min-width: 0;
+    height: 50px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
     font-size: 16px;
     font-weight: bold;
     text-transform: uppercase;
     background-color: #f8f9fa;
     cursor: pointer;
     transition: background-color 0.2s, color 0.2s;
-  }
-  
-  .key.large {
-    width: 80px; /* Wider keys for ENTER and BACKSPACE */
-  }
-  
-  .key.correct {
+    box-sizing: border-box;
+}
+
+
+.key.large {
+    flex: 1.5; /* Make ENTER and BACKSPACE keys wider */
+    font-size: 14px; /* Adjust font size for larger keys */
+}
+
+.key.correct {
     background-color: #6aaa64; /* Green for correct letters */
     color: white;
-  }
-  
-  .key.present {
+}
+
+.key.present {
     background-color: #c9b458; /* Yellow for present letters */
     color: white;
-  }
-  
-  .key.absent {
+}
+
+.key.absent {
     background-color: #787c7e; /* Gray for absent letters */
     color: white;
-  }
-  
-  .key:active {
-    transform: scale(0.95); /* Add a slight press effect */
-  }
+}
 
-  .key.large {
-    width: 80px;
-    font-size: 14px; /* Adjust font size for larger keys */
-  }
+.key:active {
+    transform: scale(0.95); /* Add a slight press effect */
+}
+
+/* Media Queries for Smaller Screens */
+@media (max-width: 600px) {
+    .key {
+        height: 40px; /* Reduce key height for smaller screens */
+        font-size: 14px; /* Reduce font size for smaller screens */
+    }
+
+    .key.large {
+        font-size: 12px; /* Adjust font size for larger keys on smaller screens */
+    }
+
+    .row {
+        gap: 3px; /* Reduce gap between keys for smaller screens */
+    }
+}
+
+@media (max-width: 400px) {
+    .key {
+        height: 35px; /* Further reduce key height for very small screens */
+        font-size: 12px; /* Further reduce font size for very small screens */
+    }
+
+    .key.large {
+        font-size: 10px; /* Adjust font size for larger keys on very small screens */
+    }
+
+    .row {
+        gap: 2px; /* Further reduce gap between keys for very small screens */
+    }
+
+    .keyboard {
+        padding: 0 2px; /* Reduce padding for very small screens */
+    }
+}
